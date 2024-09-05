@@ -15,6 +15,13 @@ services:
     ]
     volumes:
       - moneywhere_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -pNWPkVrO2 | grep 'mysqld is alive' || exit 1"]
+      timeout: 20s
+      retries: 10
+    ports:
+      - "3333:3306"
+    # name: moneywhere-mysql-5.7
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -27,6 +34,7 @@ services:
     restart: always
     ports:
       - "8085:80"
+    # name: moneywhere-phpmyadmin
 
   moneywhere-api-user:
     depends_on:
@@ -34,6 +42,9 @@ services:
         condition: service_healthy
     image: markliu2018/moneywhere-api-user:latest
     env_file: api.env
+    ports:
+      - "9092:9092"
+    # name: moneywhere-api
 
   moneywhere-fe-user:
     links:
@@ -43,6 +54,7 @@ services:
       USER_API_HOST: http://moneywhere-api-user:9092
     ports:
       - "9097:80"
+  # name: moneywhere-fe
 
   moneywhere-fe-user-mobile:
     links:
@@ -52,6 +64,7 @@ services:
       USER_API_HOST: http://moneywhere-api-user:9092
     ports:
       - "9098:80"
+    # name: moneywhere-mobile
 
 volumes:
   moneywhere_mysql_data:

@@ -1,2 +1,2 @@
-docker-compose -f docker-compose-hub.yml up -d
-docker-compose -f docker-compose-no-mysql.yml up -d
+78p7gkc1
+ALTER USER 'root'@'%' IDENTIFIED BY '111111';FLUSH PRIVILEGES;
